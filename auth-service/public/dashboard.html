@@ -3,21 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DASHBOARD USER</title>
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="/index.css">
 </head>
 <body>
-     <div id="userInfo"></div>
-     <div id="profileInfo"></div>
+    <main id="main" class="dashboard-layout">
+        <section class="panel">
+            <div id="userInfo" class="panel-header"></div>
+            <h2 class="section-title">Profile Info</h2>
+            <div id="profileInfo" class="profile-card">
+                <div class="profile-data empty">
+                    <p>Profile is empty. Fill in the form below.</p>
+                </div>
+            </div>
+        </section>
 
-     <div class="container">
-        <input type="text" id="fullName" placeholder="full name">
-        <textarea id="bio" placeholder="description"></textarea>
-        <input type="date" id="birthDate">
+        <section class="panel">
+            <h2 class="section-title">Edit Profile</h2>
+            <div class="container">
+                <input type="text" id="fullName" class="input-auth" placeholder="full name">
+                <textarea id="bio" class="input-auth input-area" placeholder="description"></textarea>
 
-        <button id="saveProfile" onclick="">Save</button>
-        <button id="logout" onclick="">Exit</button>
-     </div>
+                <button id="saveProfile" class="btn-success" type="button" onclick="saveProfile()">Save</button>
+                <div id="saveStatus" class="status-message" aria-live="polite"></div>
+                <button id="logout" class="btn-secondary" type="button" onclick="logout()">Exit</button>
+            </div>
+        </section>
+    </main>
 
-     <script src="/dashboard.js"></script>
+    <script src="/dashboard.js"></script>
 </body>
 </html>

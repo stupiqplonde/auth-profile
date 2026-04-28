@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node auth-service/server.js",
     "auth": "node auth-service/server.js",
-    "npm run profile": "node profile-service/server.js"
+    "profile": "node profile-service/server.js"
   },
   "keywords": [],
   "author": "",

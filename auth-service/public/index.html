@@ -2,20 +2,22 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name vie></meta>
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auth Profile</title>
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
     <div id="main">
+        <h1 class="page-title">Auth Profile</h1>
+        <p class="page-subtitle">Minimal black and white login screen.</p>
         <div id="input-container">
-            <input type="text" id="input-login" placeholder="login">
-            <input type="text" id="input-pass" placeholder="password">
+            <input type="text" id="input-login" class="input-auth" placeholder="login">
+            <input type="password" id="input-pass" class="input-auth" placeholder="password">
         </div>
         
         <div id="btn-container">
-            <button onclick="login()" id="btn_act" class="btn-success">Sing Up</button>
-            <button onclick="register()" id="btn_act" class="btn-success">Sing In</button>
+            <button onclick="login()" class="btn-success">Sign In</button>
+            <button onclick="register()" class="btn-secondary">Sign Up</button>
         </div>
     </div>
 

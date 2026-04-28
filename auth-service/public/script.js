@@ -5,17 +5,18 @@
     const res = await fetch("api/login", {
         method: "POST",
         headers: {"content-type": "application/json"},
-        body: JSON.stringify({login, password}),
+        body: JSON.stringify({ login: login_input, password: password_input }),
     });
 
     const data = await res.json();
     if(data.success){
         sessionStorage.setItem('token', data.token);
         sessionStorage.setItem('user', JSON.stringify(data.user));
-
         window.location.href = '/dashboard';
+        return;
     }
-      
+
+    alert(data.error || "Login failed");
 }
 
 async function register() {
@@ -25,7 +26,7 @@ async function register() {
     const res = await fetch("api/register", {
         method: "POST",
         headers: {"content-type": "application/json"},
-        body: JSON.stringify({login: login, password: password}),
+        body: JSON.stringify({ login: login_input, password: password_input }),
     });
 
     const data = await res.json();

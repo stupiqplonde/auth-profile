@@ -1,5 +1,4 @@
 import express from "express";
-import pg from "pg";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { getDb } from "../database/database.js";
@@ -10,11 +9,11 @@ router.post('/register', async (req, res) => {
     const {login, password} = req.body
 
     if(!login || !password){
-        res.json({seccess: false, error: "unknown"});
+        return res.json({success: false, error: "Login and password are required"});
     }
 
     if(password.length < 4){
-        res.json({success: false, error: "Password < 4 symbols!"})
+        return res.json({success: false, error: "Password must be at least 4 characters"})
     }
 
     const db = getDb();
@@ -26,45 +25,46 @@ router.post('/register', async (req, res) => {
     );
 
     const user = result.rows[0];
-
-    fetch(`${process.env.PROFILE_SERVICE_URL}/api/profile`,
-        {
-            method: 'POST',
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({user_id: user.id, full_name: user.login})
-        }
-    ).catch(() => {})
-
     res.json({success: true, message: "success"});
 });
 
 router.post('/login', async (req, res) => {
     const {login, password} = req.body
-    const db = getDb();
 
-    if(!login){
-        res.json({success: false, error: "None login"})
+    if(!login || !password){
+        return res.json({success: false, error: "Login and password are required"})
     }
 
-    const user = await db.query(`SELECT * FROM user WHERE login = $1`, [login]);
+    const db = getDb();
+    const user = await db.query(`SELECT * FROM users WHERE login = $1`, [login]);
+
+    if (!user.rows.length) {
+        return res.json({ success: false, error: "User not found" });
+    }
 
     const user_login = user.rows[0];
 
     const isPasswordValid = await bcrypt.compare(password, user_login.password)
 
-    if(isPasswordValid){
-        res.json({success: true, message: "Auth success"})
+    if(!isPasswordValid){
+        return res.json({success: false, error: "Invalid password"})
     }
 
     const token = jwt.sign(
-        { userID: user_login.id, login: user_login.login }, 
+        { userId: user_login.id, login: user_login.login }, 
         process.env.JWT_SECRET, 
         {expiresIn: '1h'}
     );
 
-    if(isPasswordValid){
-        res.json({success: true, token, user_login: {id: user_login.id, login: user_login.login, created_at: user_login.created_at}});
-    }
+    return res.json({
+        success: true,
+        token,
+        user: {
+            id: user_login.id,
+            login: user_login.login,
+            created_at: user_login.created_at
+        }
+    });
 });
 
 

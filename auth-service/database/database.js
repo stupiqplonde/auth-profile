@@ -1,5 +1,4 @@
 import pg from 'pg';
-import bcrypt from "bcrypt"
 import "dotenv/config"
 
 const {Pool} = pg;
@@ -7,14 +6,17 @@ const {Pool} = pg;
 let pool;
 
 export async function initDb(){
-    pool = new Pool({connctionString: process.env.DATABASE_URL, ssl: {rejectUnauthorized: false}});
+    pool = new Pool({
+        connectionString: process.env.DATABASE_URL,
+        ssl: { rejectUnauthorized: false }
+    });
 
     await pool.query(`
         CREATE TABLE IF NOT EXISTS users(
             id SERIAL PRIMARY KEY,
             login TEXT UNIQUE NOT NULL,
             password TEXT NOT NULL,
-            create_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     `);
 
